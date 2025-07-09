@@ -1,0 +1,54 @@
+My Player Matching Project: A Short Report
+Hey there! So, for this project, I set out to build a system that could look at two different video feeds of a sports game (like a main broadcast camera and a tactical one) and figure out which players in one video were the same as players in the other. Here's a quick rundown of how I tackled it.
+
+How I Went About It (My "Game Plan")
+My main idea was pretty straightforward:
+
+Spot the Players: First things first, I needed to get the computer to actually see the players in each video frame.
+
+Get Their "Visual ID": Once a player was spotted, I wanted to generate a unique "digital fingerprint" of how they looked. This fingerprint would capture their jersey, build, etc.
+
+Play Matchmaker: With these "fingerprints," the final step was to wisely pair up the players from the two different camera views, making sure I got the best possible matches.
+
+What I Tried & How It Worked (My "Playbook and Results")
+I used a few cool techniques to get this done:
+
+YOLOv5 for Player Spotting: For finding players, I leaned on a powerful AI model called YOLOv5. It's super fast and good at recognizing objects, and it's already trained to spot "people." I basically just told it, "Hey, find me all the people in this frame," and it drew neat little boxes around them. It worked really well for catching most players!
+
+ResNet18 for "Visual IDs": Once I had a player boxed, I cut out that little picture of them and fed it into another AI model called ResNet18. This model is great at understanding what things look like. It gave me a numerical "ID card" for each player based on their appearance. The idea here was that players who look similar would have similar "ID cards."
+
+Cosine Distance for "How Similar?": To compare these "ID cards" between players from different cameras, I used something called cosine distance. Think of it as a way to measure how much two players' "looks" line up. A lower number meant they looked more alike.
+
+The Hungarian Algorithm for Perfect Matches: Finally, to actually pair them up, I used a smart algorithm called the Hungarian algorithm. This is like the ultimate matchmaker – it looks at all the similarity scores and guarantees finding the absolute best one-to-one pairings between players from the two cameras, making sure no player is left out or matched incorrectly.
+
+The outcome? It generally did a good job! The program could tell me, for example, "Player 0 in the broadcast camera is the same as Player 0 in the tactical camera." It proved that this approach can successfully link players across different views.
+
+My Head-Scratching Moments (The "Challenges")
+It wasn't all smooth sailing, though. I hit a few snags:
+
+It's a Bit of a Power Hog: Those AI models are pretty demanding! Running them, especially on my regular computer without a super-powerful graphics card, could be slow. Processing a lot of video would take some serious time.
+
+The "Invisible" Player Problem: Sometimes, players would get hidden behind other players, or the camera angle would be really awkward. When that happened, my "spotter" couldn't get a clear view, and thus couldn't get a good "visual ID" for that player.
+
+"They All Look Alike!": If players had very similar jerseys or body shapes, or if the lighting was tricky, the "visual IDs" might be too similar for different players, leading to potential mix-ups. The program currently relies only on how they look.
+
+Internet Dependency: The first time I ran the code, it needed to download those big AI models from the internet. If my connection was patchy, it could be a bit of a pain.
+
+Just a Snapshot in Time: My current setup only looks at one single moment (one frame) from each video. It doesn't actually track players over time. So, if a player ran behind a scoreboard and then reappeared, the program would treat them like a brand new person instead of remembering who they were.
+
+If I Had More Time (My "Dream Features")
+This project is a solid start, but if I had more time and resources, I'd definitely push it further:
+
+Full-Blown Player Tracking: My biggest priority would be to make it actually follow players. So, if a player is temporarily hidden or runs off-screen and comes back, the system would remember them and keep their unique ID. This is called "multi-object tracking" and it's crucial for real-world scenarios.
+
+Smarter "Visual IDs" for People: I'd explore even more advanced AI models specifically designed to tell individual people apart, even if they change clothes or the lighting is totally different. This would make the matching much more robust.
+
+Speed Boost!: I'd optimize the code and leverage more powerful hardware (like better GPUs) to make it run much faster, ideally fast enough to work in real-time as the game is happening.
+
+Cool Visuals: Instead of just text output, I'd love to build a little app that shows the actual video frames, with the players boxed, and lines connecting the matched players across the two screens. Seeing it would be so much more impactful!
+
+Understanding the Field: For true sports analytics, you'd want to know exactly where on the field each player is. This would involve a step called "camera calibration" to understand how the cameras relate to the physical space.
+
+Make It Unbreakable: I'd add more features to handle all sorts of tricky video conditions – like super dark scenes, blurry footage, or huge crowds of players – to make the system as reliable as possible.
+
+All in all, it was a fun challenge, and I learned a lot about how these AI vision systems work!
